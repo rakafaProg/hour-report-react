@@ -1,10 +1,17 @@
 import React from 'react';
 
-const Main = props => {
+const Main = () => {
+    const mainStyle = {
+        maxWidth: "800px",
+        margin: "auto",
+        padding: "20px",
+    }
+
     return (
-        <main>
-            <h1>Wellcome to our hour report app</h1>
-            <h2>Please choose a ling from above to start the brilliant action</h2>
+        <main className="ui segment orange" style={mainStyle}>
+            <h1 className="ui header orange">Wellcome to our hour report app</h1>
+            <hr />
+            <h2>Please choose a link from above to start the brilliant action</h2>
         </main>
     );
 }

@@ -10,23 +10,18 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/show-report">Show Report</Link>
-            </li>
-            <li>
-              <Link to="/fill-report">Fill Report</Link>
-            </li>
-          </ul>
+          <div className="ui three item menu">
+            <Link className="item" to="/">Home</Link>
+            <Link className="item" to="/show-report">Show Report</Link>
+            <Link className="item" to="/fill-report">Fill Report</Link>
+          </div>
+
 
           <hr />
 
           <Route exact path="/" component={Main} />
-          <Route path="/show-report" component={Form} />
-          <Route path="/fill-report" component={Report} />
+          <Route path="/show-report" component={Report} />
+          <Route path="/fill-report" component={Form} />
         </div>
       </Router>
     );
