@@ -2,7 +2,8 @@ import * as types from './actionTypes';
 
 const initialState = {
     hourList: [],
-    formData: {}
+    formData: {},
+    filterBy: {}
 };
 
 const appReducer = (state = initialState, action = {}) => {
@@ -10,7 +11,9 @@ const appReducer = (state = initialState, action = {}) => {
         case types.FETCH_HOUR_LIST_SUCCESS:
             return {
                 ...state,
-                hourList: action.payload
+                hourList: action.payload,
+                orderBy: '',
+                filterBy: {}
             };
         case types.FILTERD_LIST_SUCCESS:
             return {
@@ -21,6 +24,11 @@ const appReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 orderBy: action.payload
+            };
+        case types.FILTER_CHANGED:
+            return {
+                ...state,
+                filterBy: action.payload
             };
         case types.DATA_ERROR:
             return {

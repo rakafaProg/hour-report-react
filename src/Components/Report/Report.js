@@ -19,21 +19,30 @@ class Report extends Component {
     }
 
     renderHead(headerText, propName) {
-        const { orderBy, dispatch } = this.props;
+        const { orderBy, dispatch, filterBy } = this.props;
         return (
             <th>
+                {filterBy.propName == propName && filterBy.searchText &&
+                    <i className="filter icon green"></i>
+                }
                 <i
                     className={`sort alphabet down icon ${orderBy == propName ? 'green' : 'grey'}`}
                     onClick={() => dispatch(appActions.sortTableBy(propName))}
                 ></i>
                 {headerText}
+                <br />
+                <input
+                    placeholder={`Filter ${headerText}`}
+                    onChange={e => dispatch(appActions.filterTableBy(propName, e.target.value))}
+                    value={filterBy.propName == propName ? (filterBy.searchText || "") : ""}
+                />
             </th>
         );
     }
 
     render() {
         const mainStyle = {
-            maxWidth: "800px",
+            maxWidth: "1200px",
             margin: "auto",
             padding: "20px",
         }
@@ -62,8 +71,9 @@ class Report extends Component {
 }
 
 const mapStateToProps = state => {
-    const { hourList, orderBy } = state.appReducer;
-    return { hourList, orderBy };
+    const { hourList, orderBy, filterBy } = state.appReducer;
+
+    return { hourList, orderBy, filterBy };
 }
 
 export default connect(mapStateToProps)(Report);

@@ -1,7 +1,14 @@
 import * as types from './actionTypes';
 import _ from 'lodash';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+const COOKIE_NAME = 'hoursList';
+
 
 export function getHourReport() {
+    if (!cookies.get(COOKIE_NAME)) {
+        cookies.set(COOKIE_NAME, mockupData, { path: '/' });
+    }
     return {
         type: types.FETCH_HOUR_LIST_SUCCESS,
         payload: sumMockData()
@@ -11,7 +18,8 @@ export function getHourReport() {
 function sumMockData() {
     let monthReport = {};
 
-    mockupData.forEach(item => {
+    const data = cookies.get(COOKIE_NAME) || [];
+    data.forEach(item => {
         const month = new Date(item.date).getMonth();
         let user = monthReport[month + item.username] || {};
         user.countDays = isNaN(user.countDays) ? 1 : user.countDays + 1;
@@ -53,10 +61,12 @@ export function saveData(data) {
             payload: err
         }
     } else {
-        mockupData.push(data);
+        let cookieData = cookies.get(COOKIE_NAME) || [];
+        cookieData.push(data);
+        cookies.set(COOKIE_NAME, cookieData, { path: '/' });
         return {
             type: types.DATA_SAVED_SUCCESS,
-            payload: mockupData
+            payload: cookieData
         }
     }
 }
@@ -73,9 +83,16 @@ export function sortTableBy(propName) {
             type: types.SORT_CHANGED,
             payload: propName
         });
+        dispatch({
+            type: types.FILTER_CHANGED,
+            payload: {}
+        });
 
         const sortedData = sumMockData().sort(function (a, b) {
-            return (a[propName] > b[propName]) ? 1 : ((b[propName] > a[propName]) ? -1 : 0);
+            return (
+                (a[propName] || 0) > (b[propName] || 0)) ? 1 :
+                (((b[propName] || 0) > (a[propName] || 0)) ? -1 : 0
+                );
         });
 
         dispatch({
@@ -84,6 +101,31 @@ export function sortTableBy(propName) {
         });
     }
 
+}
+
+export function filterTableBy(propName, searchText) {
+    return function (dispatch) {
+        dispatch({
+            type: types.SORT_CHANGED,
+            payload: ''
+        });
+
+        dispatch({
+            type: types.FILTER_CHANGED,
+            payload: { propName, searchText }
+        });
+
+        const filteredData = sumMockData().filter(
+            item =>
+                (item[propName] || '').toString().toLowerCase()
+                    .includes((searchText || '').toLowerCase())
+        );
+
+        dispatch({
+            type: types.FILTERD_LIST_SUCCESS,
+            payload: filteredData
+        });
+    }
 }
 
 const validateEmail = (email) => {
@@ -99,3 +141,5 @@ const mockupData = [
     { date: "2018-08-05", username: "json@gmail.com", start: "08", end: "17" },
     { date: "2018-08-09", username: "jack@gmail.com", start: "07", end: "15" },
 ];
+
+
