@@ -4,9 +4,15 @@ import './App.css';
 import Form from './Components/Form/Form';
 import Main from './Components/Main/Main';
 import Report from './Components/Report/Report';
+import Chess from './Components/Chess/Chess';
+import Knight from './Components/Chess/Knight';
+import Square from './Components/Chess/Square';
 
 class App extends Component {
   render() {
+
+    //return (<Chess />);
+
     return (
       <Router>
         <div>
@@ -22,6 +28,7 @@ class App extends Component {
           <Route exact path="/" component={Main} />
           <Route path="/show-report" component={Report} />
           <Route path="/fill-report" component={Form} />
+
         </div>
       </Router>
     );
