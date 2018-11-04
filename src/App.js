@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import Form from './Components/Form/Form';
-import Main from './Components/Main/Main';
 import Report from './Components/Report/Report';
-import Chess from './Components/Chess/Chess';
-import Knight from './Components/Chess/Knight';
-import Square from './Components/Chess/Square';
+import Container from './Components/Sortable/Container';
 
 class App extends Component {
   render() {
-
-    //return (<Chess />);
 
     return (
       <Router>
@@ -25,7 +20,7 @@ class App extends Component {
 
           <hr />
 
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={Container} />
           <Route path="/show-report" component={Report} />
           <Route path="/fill-report" component={Form} />
 
